@@ -34,10 +34,7 @@ if (typeof req.body === 'string') {
     if (!upstream.ok) {
   const text = await upstream.text();
 
-  return res.status(upstream.status).json({
-    status: upstream.status,
-    body: text,
-  });
+  return res.status(200).send(text);
 }
 
     const data = await upstream.json();

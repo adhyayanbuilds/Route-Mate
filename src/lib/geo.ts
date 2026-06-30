@@ -44,7 +44,8 @@ export async function fetchNearbyPois(
     relation["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});,
 );
 
-  const query = `[out:json][timeout:25];(${queryParts.join('')});out center 50;`;
+  const query =
+  [out:json][timeout:25];(${queryParts.join('')});out center;;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);

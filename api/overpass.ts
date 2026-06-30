@@ -32,8 +32,13 @@ if (typeof req.body === 'string') {
     });
 
     if (!upstream.ok) {
-      return res.status(upstream.status).json({ error: 'Upstream error' });
-    }
+  const text = await upstream.text();
+
+  return res.status(upstream.status).json({
+    status: upstream.status,
+    body: text,
+  });
+}
 
     const data = await upstream.json();
     return res.status(200).json(data);

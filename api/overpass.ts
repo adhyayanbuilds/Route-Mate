@@ -13,7 +13,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+let body: string;
+
+if (typeof req.body === 'string') {
+  body = req.body;
+} else if (req.body?.data) {
+  body = 'data=' + encodeURIComponent(req.body.data);
+} else {
+  body = new URLSearchParams(req.body).toString();
+}
 
   try {
     const upstream = await fetch('https://overpass-api.de/api/interpreter', {

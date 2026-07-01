@@ -44,7 +44,7 @@ export async function fetchNearbyPois(
 );
   
   const query =
-  [out:json][timeout:25];(${queryParts.join('')});out center;;
+  [out:json][timeout:25];(${queryParts.join('')});out center 50;;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);

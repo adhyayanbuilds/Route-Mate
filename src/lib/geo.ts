@@ -39,11 +39,11 @@ export async function fetchNearbyPois(
 
   const queryParts = tags.map(
   (t) =>
-    'node["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});' +
-    'way["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});',
+    `node["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});` +
+    `way["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});`
 );
   
-  const query = '[out:json][timeout:25];(' + queryParts.join('') + ');out center 50;';
+  const query = `[out:json][timeout:25];(' + queryParts.join('') + ');out center 50;`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);

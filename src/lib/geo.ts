@@ -39,8 +39,8 @@ export async function fetchNearbyPois(
 
   const queryParts = tags.map(
   (t) =>
-    node["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng}); +
-    way["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});,
+    'node["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});' +
+    'way["${t.key}"~"${t.value}"](around:${radius},${center.lat},${center.lng});',
 );
   
   const query =

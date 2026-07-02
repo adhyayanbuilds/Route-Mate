@@ -46,26 +46,35 @@ export async function fetchNearbyPois(
   const query = `[out:json][timeout:25];(${queryParts.join('')});out center 50;`;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
+const timeoutId = setTimeout(() => controller.abort(), 28000);
 
+const ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://lz4.overpass-api.de/api/interpreter',
+];
+
+for (const endpoint of ENDPOINTS) {
   try {
-    const res = await fetch('/api/overpass', {
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'data=' + encodeURIComponent(query),
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
-    if (!res.ok) return [];
+    if (!res.ok) continue;
     const json = await res.json();
     return (json.elements || [])
       .map((el: OverpassElement) => mapOverpassToPlace(el, center, category))
       .filter((p: Place | null): p is Place => p !== null)
       .sort((a: Place, b: Place) => a.distance - b.distance);
   } catch {
-    clearTimeout(timeoutId);
-    return [];
+    // Try next endpoint
   }
+}
+
+clearTimeout(timeoutId);
+return [];
 }
 
 interface OverpassElement {
